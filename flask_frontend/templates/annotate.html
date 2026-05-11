@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Annotate — MammoAI{% endblock %}
+{% block body_class %}page-app{% endblock %}
+{% block body %}
+<header class="app-header">
+  <div class="header-left">
+    <span class="brand-mark sm" aria-hidden="true">◆</span>
+    <div>
+      <strong class="header-title">MammoAI</strong>
+      <span class="header-tag">Web · same data/ exports as PyQt</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="user-pill">{{ username }}</span>
+    <a class="btn btn-ghost btn-sm" href="{{ url_for('logout') }}">Log out</a>
+  </div>
+</header>
+
+<div class="app-layout app-layout-three">
+  <aside class="sidebar card-elevated">
+    <section class="sidebar-section">
+      <h2 class="section-title">Image</h2>
+      <input type="file" id="file-input" accept=".png,.jpg,.jpeg,.bmp,.webp" hidden />
+      <button type="button" id="btn-import" class="btn btn-secondary btn-block">Import image</button>
+      <p class="fine-print">Adds to your library. Masks go to <code>data/masks/</code>.</p>
+    </section>
+    <section class="sidebar-section">
+      <h2 class="section-title">Library</h2>
+      <ul id="image-list" class="image-list"></ul>
+    </section>
+    <section class="sidebar-section grow">
+      <h2 class="section-title">Vertices</h2>
+      <ul id="coord-list" class="coord-list mono"></ul>
+    </section>
+    <div class="sidebar-actions">
+      <button type="button" id="btn-draw" class="btn btn-secondary btn-block">Draw: OFF</button>
+      <button type="button" id="btn-erase" class="btn btn-secondary btn-block">Erase: OFF</button>
+      <div class="btn-row">
+        <button type="button" id="btn-undo" class="btn btn-ghost">Undo</button>
+        <button type="button" id="btn-redo" class="btn btn-ghost">Redo</button>
+        <button type="button" id="btn-clear" class="btn btn-ghost">Clear</button>
+      </div>
+      <button type="button" id="btn-save" class="btn btn-primary btn-block">Save region</button>
+    </div>
+  </aside>
+
+  <main class="workspace">
+    <div class="workspace-toolbar">
+      <span id="status-text" class="status-text">Import or pick an image</span>
+      <div class="toolbar-cluster">
+        <button type="button" id="btn-fit" class="btn btn-ghost btn-sm">Fit to view</button>
+        <span class="hint">Draw: add / drag vertices · Erase: click vertex · Scroll: zoom to 10×</span>
+      </div>
+    </div>
+    <div class="canvas-wrap card-elevated">
+      <div id="canvas-scroll" class="canvas-scroll">
+        <canvas id="view"></canvas>
+      </div>
+    </div>
+    <div id="toast" class="toast hidden" role="status"></div>
+  </main>
+
+  <aside class="info-panel card-elevated" aria-label="Clinical reference">
+    <h2 class="section-title">Breast imaging notes</h2>
+    <div class="info-body prose">
+      <p><strong>Screening</strong> mammography is the primary tool for early breast cancer detection. Regular screening is associated with lower mortality; follow local guidelines for start age and interval.</p>
+      <p><strong>Findings</strong> may include masses (irregular shapes raise concern), calcifications (segmental or linear patterns merit workup), asymmetry, or architectural distortion.</p>
+      <p><strong>BI-RADS (overview)</strong> categories summarize management: incomplete (0), negative (1), benign (2), probably benign (3, short-interval follow-up), suspicious (4, biopsy considered), highly suggestive of malignancy (5), known biopsy-proven cancer (6).</p>
+      <p><strong>This tool</strong> helps outline regions of interest. It does not diagnose disease. All interpretations belong to a qualified radiologist.</p>
+      <p class="fine-print">Educational summary only — not medical advice.</p>
+    </div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/annotator.js') }}" defer></script>
+{% endblock %}

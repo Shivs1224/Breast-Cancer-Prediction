@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Register — MammoAI{% endblock %}
+{% block body_class %}page-auth{% endblock %}
+{% block body %}
+<div class="auth-shell">
+  <div class="auth-card card-elevated">
+    <div class="brand-block">
+      <span class="brand-mark" aria-hidden="true">◇</span>
+      <h1 class="brand-title">Join MammoAI</h1>
+      <p class="brand-sub">Stored in Django SQLite · Flask UI</p>
+    </div>
+    {% if error %}
+    <div class="alert alert-error" role="alert">{{ error }}</div>
+    {% endif %}
+    <form method="post" class="stack-form">
+      <label class="field">
+        <span class="field-label">Username</span>
+        <input class="input" type="text" name="username" autocomplete="username" required />
+      </label>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input class="input" type="email" name="email" autocomplete="email" required />
+      </label>
+      <label class="field">
+        <span class="field-label">Password</span>
+        <input class="input" type="password" name="password" autocomplete="new-password" required />
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+    <p class="auth-footer">
+      Already registered? <a href="{{ url_for('login') }}">Sign in</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

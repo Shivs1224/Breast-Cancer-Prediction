@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Sign in — MammoAI{% endblock %}
+{% block body_class %}page-auth{% endblock %}
+{% block body %}
+<div class="auth-shell">
+  <div class="auth-card card-elevated">
+    <div class="brand-block">
+      <span class="brand-mark" aria-hidden="true">◆</span>
+      <h1 class="brand-title">MammoAI</h1>
+      <p class="brand-sub">Web annotator · secure session</p>
+    </div>
+    {% if error %}
+    <div class="alert alert-error" role="alert">{{ error }}</div>
+    {% endif %}
+    <form method="post" class="stack-form">
+      <label class="field">
+        <span class="field-label">Username</span>
+        <input class="input" type="text" name="username" autocomplete="username" required />
+      </label>
+      <label class="field">
+        <span class="field-label">Password</span>
+        <input class="input" type="password" name="password" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+    <p class="auth-footer">
+      No account? <a href="{{ url_for('register') }}">Create one</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
