@@ -1,1 +1,1 @@
-web: gunicorn run_flask:app --bind 0.0.0.0:$PORT --workers 1
+web: gunicorn mammo_project.wsgi:application --bind 0.0.0.0:$PORT --workers 1

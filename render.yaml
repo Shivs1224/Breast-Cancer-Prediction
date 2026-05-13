@@ -5,7 +5,7 @@ services:
     name: breast-cancer-prediction
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn run_flask:app --bind 0.0.0.0:$PORT --workers 1
+    startCommand: gunicorn mammo_project.wsgi:application --bind 0.0.0.0:$PORT --workers 1
     releaseCommand: python manage.py migrate --noinput
     envVars:
       - key: PYTHON_VERSION

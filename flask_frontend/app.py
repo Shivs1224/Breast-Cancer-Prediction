@@ -77,6 +77,7 @@ def create_app() -> Flask:
     pkg = Path(__file__).resolve().parent
     app = Flask(
         __name__,
+        static_url_path="/assets",
         static_folder=str(pkg / "static"),
         template_folder=str(pkg / "templates"),
     )
