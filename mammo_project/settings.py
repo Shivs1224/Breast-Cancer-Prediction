@@ -1,15 +1,49 @@
 """
 Django settings — database and media for MammoAI (used by Flask ORM layer).
 """
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = "dev-only-change-in-production-use-env"
+SECRET_KEY = os.environ.get("SECRET_KEY", "dev-only-change-in-production-use-env")
 
-DEBUG = True
+# Render sets RENDER=true; default DEBUG True locally when unset.
+_is_render = bool(os.environ.get("RENDER"))
 
-ALLOWED_HOSTS = ["*"]
+
+def _env_bool(key: str, default: bool = False) -> bool:
+    v = os.environ.get(key)
+    if v is None:
+        return default
+    return v.strip().lower() in ("1", "true", "yes", "on")
+
+
+DEBUG = _env_bool("DEBUG", default=not _is_render)
+
+# Production app: https://breast-cancer-prediction-1cio.onrender.com/
+_hosts_env = (os.environ.get("ALLOWED_HOSTS") or "").strip()
+if _hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in _hosts_env.split(",") if h.strip()]
+else:
+    ALLOWED_HOSTS = [
+        "localhost",
+        "127.0.0.1",
+        "breast-cancer-prediction-1cio.onrender.com",
+        ".onrender.com",
+    ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://breast-cancer-prediction-1cio.onrender.com",
+]
+_extra_csrf = (os.environ.get("CSRF_TRUSTED_ORIGINS") or "").strip()
+if _extra_csrf:
+    CSRF_TRUSTED_ORIGINS.extend(
+        o.strip() for o in _extra_csrf.split(",") if o.strip()
+    )
+
+if _is_render and not DEBUG:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 INSTALLED_APPS = [
     "django.contrib.admin",

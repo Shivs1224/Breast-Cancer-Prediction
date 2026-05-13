@@ -1,5 +1,8 @@
 #!/usr/bin/env python
-"""Django entrypoint for database migrations and admin."""
+"""Django entrypoint for database migrations and admin.
+
+Public deployment (Flask UI via Gunicorn): https://breast-cancer-prediction-1cio.onrender.com/
+"""
 import os
 import sys
 

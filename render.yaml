@@ -1,0 +1,12 @@
+# https://render.com/docs/blueprint-spec
+# After deploy, set SECRET_KEY in the Render dashboard (Environment).
+services:
+  - type: web
+    name: breast-cancer-prediction
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn run_flask:app --bind 0.0.0.0:$PORT --workers 1
+    releaseCommand: python manage.py migrate --noinput
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.3"

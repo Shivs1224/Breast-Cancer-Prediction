@@ -20,14 +20,18 @@ import django
 
 django.setup()
 
-from django.core.management import call_command
 from flask_frontend.app import create_app
 
-call_command("migrate", interactive=False, verbosity=0)
 app = create_app()
 
 if __name__ == "__main__":
+    from django.core.management import call_command
+
+    call_command("migrate", interactive=False, verbosity=0)
     print("MammoAI - Flask UI + Django SQLite")
-    print("  http://127.0.0.1:5000")
+    port = int(os.environ.get("PORT", "5000"))
+    host = os.environ.get("FLASK_HOST", "127.0.0.1")
+    debug = not os.environ.get("RENDER")
+    print(f"  http://{host}:{port}" if host != "0.0.0.0" else f"  http://127.0.0.1:{port}")
     print("  DB: db.sqlite3  |  Uploads: media/  |  Masks/CSV: data/")
-    app.run(host="127.0.0.1", port=5000, debug=True)
+    app.run(host=host, port=port, debug=debug)
